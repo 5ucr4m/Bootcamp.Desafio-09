@@ -1,4 +1,5 @@
 import { getRepository, Repository, In } from 'typeorm';
+import AppError from '@shared/errors/AppError';
 
 import IProductsRepository from '@modules/products/repositories/IProductsRepository';
 import ICreateProductDTO from '@modules/products/dtos/ICreateProductDTO';
@@ -21,21 +22,48 @@ class ProductsRepository implements IProductsRepository {
     price,
     quantity,
   }: ICreateProductDTO): Promise<Product> {
-    // TODO
+    const productFinded = await this.ormRepository.findOne({
+      name,
+    });
+
+    if (productFinded) {
+      throw new AppError('Já existe um produto com esse nome');
+    }
+
+    const product = await this.ormRepository.create({
+      name,
+      price,
+      quantity,
+    });
+
+    await this.ormRepository.save(product);
+
+    return product;
   }
 
   public async findByName(name: string): Promise<Product | undefined> {
-    // TODO
+    const product = await this.ormRepository.findOne({
+      name,
+    });
+
+    return product;
   }
 
   public async findAllById(products: IFindProducts[]): Promise<Product[]> {
-    // TODO
+    const findedProducts = await this.ormRepository.find({
+      where: {
+        id: In(products),
+      },
+    });
+
+    return findedProducts;
   }
 
   public async updateQuantity(
     products: IUpdateProductsQuantityDTO[],
   ): Promise<Product[]> {
-    // TODO
+    // console.log(products);
+    return products as Product[];
   }
 }
 

@@ -31,7 +31,6 @@ class CreateCustomerService {
       });
       return customer;
     } catch (err) {
-      console.log(err);
       throw new AppError('Não foi possivel criar o customer');
     }
   }
