@@ -54,7 +54,7 @@ class CreateOrderService {
       return {
         product_id: product.id,
         price: findedProduct.price,
-        quantity: product.quantity,
+        quantity: product.quantity * 1,
       };
     });
 
@@ -62,6 +62,8 @@ class CreateOrderService {
       customer,
       products: productsOrder,
     });
+
+    await this.productsRepository.updateQuantity(products);
 
     return order;
   }

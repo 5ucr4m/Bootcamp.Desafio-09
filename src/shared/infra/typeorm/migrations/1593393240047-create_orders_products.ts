@@ -30,11 +30,13 @@ export default class createOrdersProducts1593393240047
           {
             name: 'price',
             type: 'decimal',
+            precision: 10,
+            scale: 2,
             isNullable: false,
           },
           {
             name: 'quantity',
-            type: 'decimal',
+            type: 'integer',
             isNullable: false,
           },
           {
