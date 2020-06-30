@@ -1,5 +1,6 @@
 import {
   Entity,
+  Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -16,11 +17,15 @@ class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(_ => Customer, customer => customer.id)
+  @Column()
+  customer_id: string;
+
+  @ManyToOne(() => Customer)
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
-  @OneToMany(_ => OrdersProducts, order_products => order_products.order_id)
-  @JoinColumn()
+  @OneToMany(() => OrdersProducts, order_products => order_products.order)
+  @JoinColumn({ name: 'id' })
   order_products: OrdersProducts[];
 
   @CreateDateColumn()
